@@ -34,6 +34,7 @@ export const GlobalStyles = createGlobalStyle`
         background-color:transparent;
         outline:none;
         border:none;
+        color:inherit;
         font-size:1rem;
     }
 
