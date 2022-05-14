@@ -1,18 +1,53 @@
 import { useEffect, useState } from "react";
+import Button from "../../button/Button";
+import {
+  HiOutlineDocumentText,
+  HiOutlineCalendar,
+  HiOutlineClock,
+  HiOutlineLocationMarker,
+  HiOutlineBriefcase,
+} from "react-icons/hi";
 import {
   SForm,
   SFormControl,
   SFormGroup,
+  SFormHelper,
+  SFormIcon,
+  SFormInput,
   SFormLabel,
-  SFormTextHelper,
 } from "./FormAddPemakaianStyles";
+import DateTime from "../../../utils/DateTime";
+import DatePicker from "../../datetimepicker/datepicker/DatePicker";
+import TimePicker from "../../datetimepicker/timepicker/TimePicker";
 
 export default function FormAddPemakaian({ handleSubmit, data }) {
   const [formData, setFormData] = useState(data);
 
-  const onChangeField = (e) => {
+  const [tempValueDatePicker, setTempValueDatePicker] = useState();
+  const [tempValueTimePicker, setTempValueTimePicker] = useState();
+
+  const handleOnChange = (e) => {
     let id = e.target.id;
     let value = e.target.value;
+
+    setFormData((data) => ({ ...data, [id]: value }));
+  };
+
+  const openTimePicker = (e) => {
+    setTempValueTimePicker({ id: e.target.id, value: e.target.value });
+  };
+
+  const onChooseTimePicker = ({ id, value }) => {
+    setTempValueTimePicker(null);
+    setFormData((data) => ({ ...data, [id]: value }));
+  };
+
+  const openDatePicker = (e) => {
+    setTempValueDatePicker({ id: e.target.id, value: e.target.value });
+  };
+
+  const onChooseDatePicker = ({ id, value }) => {
+    setTempValueDatePicker(null);
     setFormData((data) => ({ ...data, [id]: value }));
   };
 
@@ -22,91 +57,103 @@ export default function FormAddPemakaian({ handleSubmit, data }) {
   };
   //
   useEffect(() => {
-    // console.log(formData);
-  }, [formData]);
+    // console.log(valueDatePicker);
+  }, []);
+
   //
   return (
-    <SForm onSubmit={onSubmit} autoComplete="off">
-      <FormField
-        type="text"
-        label="No SPJ"
-        name="no_spj"
-        value={formData["no_spj"]}
-        onChange={onChangeField}
-      />
+    <>
+      <TimePicker param={tempValueTimePicker} onChoose={onChooseTimePicker} />
 
-      <FormField
-        type="date"
-        label="Tanggal Berangkat"
-        name="tgl_berangkat"
-        value={formData["tgl_berangkat"]}
-        onChange={onChangeField}
-      />
+      <DatePicker param={tempValueDatePicker} onChoose={onChooseDatePicker} />
 
-      <FormField
-        type="date"
-        label="Tanggal Kembali"
-        name="tgl_kembali"
-        value={formData["tgl_kembali"]}
-        onChange={onChangeField}
-      />
+      <SForm onSubmit={onSubmit} autoComplete="off">
+        <FormField
+          type="text"
+          label="No SPJ"
+          name="no_spj"
+          icon={<HiOutlineDocumentText />}
+          value={formData["no_spj"]}
+          onChange={handleOnChange}
+          helper="Kosongi jika tidak ada !"
+        />
 
-      <FormField
-        type="time"
-        label="Jam Berangkat"
-        name="jam_berangkat"
-        value={formData["jam_berangkat"]}
-        onChange={onChangeField}
-      />
+        <FormField
+          type="text"
+          label="Tanggal Berangkat"
+          name="tgl_berangkat"
+          icon={<HiOutlineCalendar />}
+          value={formData["tgl_berangkat"]}
+          onChange={handleOnChange}
+          onClick={openDatePicker}
+        />
 
-      <FormField
-        type="time"
-        label="Jam Kembali"
-        name="jam_kembali"
-        value={formData["jam_kembali"]}
-        onChange={onChangeField}
-      />
+        <FormField
+          type="text"
+          label="Tanggal Kembali"
+          name="tgl_kembali"
+          icon={<HiOutlineCalendar />}
+          value={formData["tgl_kembali"]}
+          onChange={handleOnChange}
+          onClick={openDatePicker}
+        />
 
-      <FormField
-        type="text"
-        label="Tujuan"
-        name="tujuan"
-        value={formData["tujuan"]}
-        onChange={onChangeField}
-      />
+        <FormField
+          type="text"
+          label="Jam Berangkat"
+          name="jam_berangkat"
+          icon={<HiOutlineClock />}
+          value={formData["jam_berangkat"]}
+          onChange={handleOnChange}
+          onClick={openTimePicker}
+        />
 
-      <FormField
-        type="text"
-        label="Keperluan"
-        name="keperluan"
-        value={formData["keperluan"]}
-        onChange={onChangeField}
-      />
+        <FormField
+          type="text"
+          label="Jam Kembali"
+          name="jam_kembali"
+          icon={<HiOutlineClock />}
+          value={formData["jam_kembali"]}
+          onChange={handleOnChange}
+          onClick={openTimePicker}
+        />
 
-      <FormField
-        type="number"
-        label="Km Awal"
-        name="km_awal"
-        value={formData["km_awal"]}
-        onChange={onChangeField}
-      />
+        <FormField
+          type="text"
+          label="Tujuan"
+          name="tujuan"
+          icon={<HiOutlineLocationMarker />}
+          value={formData["tujuan"]}
+          onChange={handleOnChange}
+        />
 
-      <button>Simpan</button>
-    </SForm>
+        <FormField
+          type="text"
+          label="Keperluan"
+          name="keperluan"
+          icon={<HiOutlineBriefcase />}
+          value={formData["keperluan"]}
+          onChange={handleOnChange}
+        />
+
+        <Button type="submit" variant="primary">
+          Simpan
+        </Button>
+      </SForm>
+    </>
   );
 }
 
-const FormField = (props) => {
+const FormField = ({ label, icon, helper, ...props }) => {
   return (
     <SFormGroup>
-      <SFormLabel htmlFor={props.name}>{props.label}</SFormLabel>
-      <SFormControl
-        type={props.type}
-        id={props.name}
-        value={props.value}
-        onChange={props.onChange}
-      />
-      {props.helper && <SFormTextHelper>{props.helper}</SFormTextHelper>}
+      <SFormLabel htmlFor={props.name}>{label}</SFormLabel>
+      <SFormControl helper={helper}>
+        <SFormIcon>{icon}</SFormIcon>
+        <SFormInput {...props} id={props.name} />
+
+        {helper && <SFormHelper>{helper}</SFormHelper>}
+      </SFormControl>
     </SFormGroup>
   );
 };
@@ -114,10 +161,10 @@ const FormField = (props) => {
 FormAddPemakaian.defaultProps = {
   data: {
     no_spj: "",
-    tgl_berangkat: "2022-05-18",
-    tgl_kembali: "2022-05-18",
-    jam_berangkat: "15:30",
-    jam_kembali: "18:30",
+    tgl_berangkat: DateTime.dateNow(),
+    tgl_kembali: DateTime.dateNow(),
+    jam_berangkat: DateTime.timeNow(),
+    jam_kembali: DateTime.timeNow(),
     tujuan: "",
     keperluan: "",
     km_awal: "",

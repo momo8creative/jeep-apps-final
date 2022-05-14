@@ -106,7 +106,7 @@ export const SNav = styled.nav`
     padding: 4rem 0;
     font-size: 1.2rem;
     background-color: ${({ theme }) => theme.bg};
-    animation: ${({ show }) => (show ? slide : "")} 1s ease-in-out;
+    animation: ${({ show }) => (show ? slide : "")} 0.5s ease-in-out;
   }
 
   /* laptop */
@@ -151,7 +151,7 @@ export const SButtonTheme = styled.button`
   width: 30px;
   height: 14px;
   border-radius: 14px;
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg3};
   box-shadow: 0 0 2px ${({ theme }) => theme.bg3};
 
   ::before {
@@ -162,7 +162,7 @@ export const SButtonTheme = styled.button`
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: ${({ theme }) => theme.bg3};
+    background-color: white;
     transition: 0.2s ease-in-out;
   }
 

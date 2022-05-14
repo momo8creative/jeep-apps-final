@@ -1,6 +1,7 @@
 import {} from "react";
 import { BrowserRouter } from "react-router-dom";
 import ApiContextProvider from "./contexts/ApiContext";
+// import GlobalContextProvider from "./contexts/GlobalContext";
 import ThemeContextProvider from "./contexts/ThemeContext";
 import Routes from "./Routes";
 
